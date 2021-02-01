@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
 import { RouterModule } from "@angular/router";
+import { ComponentsModule } from "../components/components.module";
 
 // components
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -19,7 +20,13 @@ import { PagesComponent } from "./pages.component";
     Grafica1Component,
     PagesComponent,
   ],
-  imports: [CommonModule, FormsModule, SharedModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SharedModule,
+    RouterModule,
+    ComponentsModule,
+  ],
   exports: [
     DashboardComponent,
     ProgressComponent,
