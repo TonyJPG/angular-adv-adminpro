@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-account-settings',
-  templateUrl: './account-settings.component.html',
-  styles: [
-  ]
+  selector: "app-account-settings",
+  templateUrl: "./account-settings.component.html",
+  styles: [],
 })
 export class AccountSettingsComponent implements OnInit {
+  public linkTheme = document.querySelector("link#theme");
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  changeTheme(theme: string): void {
+    const url = `./assets/css/colors/${theme}.css`;
+    this.linkTheme?.setAttribute("href", url);
+    localStorage.setItem("theme", url);
   }
-
 }
