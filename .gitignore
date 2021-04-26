@@ -44,3 +44,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# archivos de la importación inicial del tema (que no usaremos)
+/src/assets/plugins
+/src/assets/scss
