@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
+import {
+  AbstractControlOptions,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
 
 @Component({
   selector: "app-register",
@@ -9,19 +14,24 @@ import { FormBuilder, Validators } from "@angular/forms";
 export class RegisterComponent {
   public formSubmitted = false;
 
-  public registerForm = this.fb.group({
-    nombre: ["Tony", Validators.required],
-    email: ["test100@gmail.com", [Validators.required, Validators.email]],
-    password: ["", Validators.required],
-    password2: ["", Validators.required],
-    terminos: [false, Validators.requiredTrue],
-  });
+  public registerForm = this.fb.group(
+    {
+      nombre: ["Tony", Validators.required],
+      email: ["test100@gmail.com", [Validators.required, Validators.email]],
+      password: ["123456", Validators.required],
+      password2: ["123456", Validators.required],
+      terminos: [true, Validators.requiredTrue],
+    },
+    {
+      validators: this.passwordsIguales("password", "password2"),
+    } as AbstractControlOptions
+  );
 
   constructor(private fb: FormBuilder) {}
 
   crearUsuario(): void {
     this.formSubmitted = true;
-    console.log(this.registerForm.value);
+    console.log(this.registerForm);
 
     if (this.registerForm.valid) {
       console.log("Posteando formulario!");
@@ -32,15 +42,11 @@ export class RegisterComponent {
 
   // funcion para mostrar errores de "campo requerido" en el HTML con un ngIf
   campoNoValido(campo: string): boolean {
-    // if ( this.registerForm.get(campo)?.invalid && this.formSubmitted ) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-
-    return this.registerForm.get(campo)?.invalid && this.formSubmitted
-      ? true
-      : false;
+    if (this.registerForm.get(campo)?.invalid && this.formSubmitted) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // funcion para mostrar errores de "campo requerido" en el HTML con un ngIf
@@ -49,16 +55,26 @@ export class RegisterComponent {
   }
 
   contrasenasNoValidas(): boolean {
-    // const pass1 = this.registerForm.get("password")?.value;
-    // const pass2 = this.registerForm.get("password2")?.value;
+    const pass1 = this.registerForm.get("password")?.value;
+    const pass2 = this.registerForm.get("password2")?.value;
 
-    return (
-      !(
-        this.registerForm.get("password")?.value ===
-        this.registerForm.get("password2")?.value
-      ) &&
-      this.formSubmitted &&
-      this.registerForm.get("password")?.value.length === 0
-    );
+    if (pass1 !== pass2 && this.formSubmitted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  passwordsIguales(pass1Name: string, pass2Name: string): object {
+    return (formGroup: FormGroup) => {
+      const pass1Control = formGroup.get(pass1Name);
+      const pass2Control = formGroup.get(pass2Name);
+
+      if (pass1Control?.value === pass2Control?.value) {
+        pass2Control?.setErrors(null);
+      } else {
+        pass2Control?.setErrors({ noEsIgual: true });
+      }
+    };
   }
 }
