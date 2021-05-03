@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { UsuarioService } from "../../services/usuario.service";
 import {
   AbstractControlOptions,
   FormGroup,
@@ -27,17 +28,27 @@ export class RegisterComponent {
     } as AbstractControlOptions
   );
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService
+  ) {}
 
   crearUsuario(): void {
     this.formSubmitted = true;
     console.log(this.registerForm);
 
-    if (this.registerForm.valid) {
-      console.log("Posteando formulario!");
-    } else {
-      console.log("Formulario no es correcto...");
+    if (this.registerForm.invalid) {
+      return;
     }
+
+    // realiza el posteo si el formulario es válido
+    this.usuarioService.crearUsuario(this.registerForm.value).subscribe({
+      next: (resp: object) => {
+        console.log("Se ha registrado el usuario!");
+        console.log(resp);
+      },
+      error: (err) => console.warn(err.error.msg),
+    });
   }
 
   // funcion para mostrar errores de "campo requerido" en el HTML con un ngIf
