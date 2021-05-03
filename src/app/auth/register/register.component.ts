@@ -1,11 +1,13 @@
 import { Component } from "@angular/core";
-import { UsuarioService } from "../../services/usuario.service";
 import {
   AbstractControlOptions,
   FormGroup,
   FormBuilder,
   Validators,
 } from "@angular/forms";
+import Swal from "sweetalert2";
+
+import { UsuarioService } from "../../services/usuario.service";
 
 @Component({
   selector: "app-register",
@@ -42,12 +44,21 @@ export class RegisterComponent {
     }
 
     // realiza el posteo si el formulario es válido
+    // tslint:disable-next-line: deprecation
     this.usuarioService.crearUsuario(this.registerForm.value).subscribe({
       next: (resp: object) => {
         console.log("Se ha registrado el usuario!");
         console.log(resp);
       },
-      error: (err) => console.warn(err.error.msg),
+      error: (err) => {
+        // si sucede un error
+        console.warn(err.error.msg);
+        Swal.fire({
+          title: "Error!",
+          text: err.error.msg,
+          icon: "error",
+        });
+      },
     });
   }
 

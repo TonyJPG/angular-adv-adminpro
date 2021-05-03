@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 
 import { environment } from "../../environments/environment";
 import { RegisterForm } from "../interfaces/register-form.interface";
+import { LoginForm } from "../interfaces/login-form.interface";
 
 const base_url = environment.base_url;
 
@@ -15,5 +16,9 @@ export class UsuarioService {
 
   crearUsuario(formData: RegisterForm): Observable<object> {
     return this.http.post(`${base_url}/usuarios`, formData);
+  }
+
+  login(formData: LoginForm): Observable<object> {
+    return this.http.post(`${base_url}/login`, formData);
   }
 }
