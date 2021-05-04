@@ -9,3 +9,8 @@
 #themecolors .selector {
   cursor: pointer;
 }
+
+/* boton de google en /login */
+.abcRioButton {
+  margin: 0 auto 30px;
+}
