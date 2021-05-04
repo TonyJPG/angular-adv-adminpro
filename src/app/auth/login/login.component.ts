@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 import Swal from "sweetalert2";
 
 import { UsuarioService } from "../../services/usuario.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-login",
@@ -14,8 +15,11 @@ export class LoginComponent {
   public formSubmitted = false;
 
   public loginForm = this.fb.group({
-    email: ["test100@gmail.com", [Validators.required, Validators.email]],
-    password: ["123456", Validators.required],
+    email: [
+      localStorage.getItem("email") || "",
+      [Validators.required, Validators.email],
+    ],
+    password: ["", Validators.required],
     remember: [false],
   });
 
@@ -28,9 +32,13 @@ export class LoginComponent {
   login(): void {
     // tslint:disable-next-line: deprecation
     this.usuarioService.login(this.loginForm.value).subscribe({
-      next: (resp: object) => {
+      next: (resp: Observable<any>) => {
         console.log("Se ha logeado el usuario!");
-        console.log(resp);
+        if (this.loginForm.get("remember")?.value) {
+          localStorage.setItem("email", this.loginForm.get("email")?.value);
+        } else {
+          localStorage.removeItem("email");
+        }
       },
       error: (err) => {
         console.warn(err.error.msg);
