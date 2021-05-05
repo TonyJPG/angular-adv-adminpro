@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit {
         } else {
           localStorage.removeItem("email");
         }
+
+        // redirije al Dashboard
+        this.router.navigateByUrl("/");
       },
       error: (err) => {
         console.warn(err.error.msg);
@@ -57,9 +60,6 @@ export class LoginComponent implements OnInit {
         });
       },
     });
-
-    console.log(this.loginForm.value);
-    // this.router.navigateByUrl("/");
   }
 
   renderButton(): void {
@@ -92,9 +92,10 @@ export class LoginComponent implements OnInit {
       (googleUser: any) => {
         const id_token = googleUser.getAuthResponse().id_token;
         // tslint:disable-next-line: deprecation
-        this.usuarioService.loginGoogle(id_token).subscribe();
-
-        // TODO mover al dashboard
+        this.usuarioService.loginGoogle(id_token).subscribe(() => {
+          // redirije al Dashboard
+          this.router.navigateByUrl("/");
+        });
       },
       (error: any) => {
         alert(JSON.stringify(error, undefined, 2));

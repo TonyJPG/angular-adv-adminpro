@@ -5,6 +5,7 @@ import {
   FormBuilder,
   Validators,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 import Swal from "sweetalert2";
 
 import { UsuarioService } from "../../services/usuario.service";
@@ -32,7 +33,8 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private router: Router
   ) {}
 
   crearUsuario(): void {
@@ -47,8 +49,8 @@ export class RegisterComponent {
     // tslint:disable-next-line: deprecation
     this.usuarioService.crearUsuario(this.registerForm.value).subscribe({
       next: (resp: object) => {
-        console.log("Se ha registrado el usuario!");
-        console.log(resp);
+        // redirije al Dashboard
+        this.router.navigateByUrl("/");
       },
       error: (err) => {
         // si sucede un error
