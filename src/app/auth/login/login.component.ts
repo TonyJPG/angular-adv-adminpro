@@ -16,6 +16,7 @@ declare const gapi: any;
 })
 export class LoginComponent implements OnInit {
   public formSubmitted = false;
+  public auth2: any;
 
   public loginForm = this.fb.group({
     email: [
@@ -61,16 +62,6 @@ export class LoginComponent implements OnInit {
     // this.router.navigateByUrl("/");
   }
 
-  onSuccess(googleUser: any): void {
-    console.log("Logged in as: " + googleUser.getBasicProfile().getName());
-    const id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token);
-  }
-
-  onFailure(error: any): void {
-    console.log(error);
-  }
-
   renderButton(): void {
     gapi.signin2.render("my-signin2", {
       scope: "profile email",
@@ -78,8 +69,36 @@ export class LoginComponent implements OnInit {
       height: 50,
       longtitle: true,
       theme: "dark",
-      onsuccess: this.onSuccess,
-      onfailure: this.onFailure,
     });
+
+    this.startApp();
+  }
+
+  startApp(): void {
+    gapi.load("auth2", () => {
+      this.auth2 = gapi.auth2.init({
+        client_id:
+          "420301587989-lg9dopd325p47ta9ruonn81f82jq95ik.apps.googleusercontent.com",
+        cookiepolicy: "single_host_origin",
+      });
+      this.attachSignin(document.getElementById("my-signin2"));
+    });
+  }
+
+  attachSignin(element: HTMLElement | null): void {
+    this.auth2.attachClickHandler(
+      element,
+      {},
+      (googleUser: any) => {
+        const id_token = googleUser.getAuthResponse().id_token;
+        // tslint:disable-next-line: deprecation
+        this.usuarioService.loginGoogle(id_token).subscribe();
+
+        // TODO mover al dashboard
+      },
+      (error: any) => {
+        alert(JSON.stringify(error, undefined, 2));
+      }
+    );
   }
 }
