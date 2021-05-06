@@ -75,15 +75,10 @@ export class LoginComponent implements OnInit {
     this.startApp();
   }
 
-  startApp(): void {
-    gapi.load("auth2", () => {
-      this.auth2 = gapi.auth2.init({
-        client_id:
-          "420301587989-lg9dopd325p47ta9ruonn81f82jq95ik.apps.googleusercontent.com",
-        cookiepolicy: "single_host_origin",
-      });
-      this.attachSignin(document.getElementById("my-signin2"));
-    });
+  async startApp(): Promise<void> {
+    await this.usuarioService.googleInit();
+    this.auth2 = this.usuarioService.auth2;
+    this.attachSignin(document.getElementById("my-signin2"));
   }
 
   attachSignin(element: HTMLElement | null): void {
