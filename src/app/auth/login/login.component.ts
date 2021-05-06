@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, Validators } from "@angular/forms";
 import Swal from "sweetalert2";
@@ -30,7 +30,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -94,7 +95,9 @@ export class LoginComponent implements OnInit {
         // tslint:disable-next-line: deprecation
         this.usuarioService.loginGoogle(id_token).subscribe(() => {
           // redirije al Dashboard
-          this.router.navigateByUrl("/");
+          this.ngZone.run(() => {
+            this.router.navigateByUrl("/");
+          });
         });
       },
       (error: any) => {
