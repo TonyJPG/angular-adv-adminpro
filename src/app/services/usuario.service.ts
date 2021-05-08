@@ -9,6 +9,7 @@ import { tap, map, catchError } from "rxjs/operators";
 
 import { RegisterForm } from "../interfaces/register-form.interface";
 import { LoginForm } from "../interfaces/login-form.interface";
+import { Usuario } from "../models/usuario.model";
 
 const base_url = environment.base_url;
 // declare specifies a type to an already existing variable, not declaring a new one
@@ -19,6 +20,7 @@ declare const gapi: any;
 })
 export class UsuarioService {
   public auth2: any;
+  public usuario!: Usuario;
 
   constructor(
     private http: HttpClient,
@@ -65,6 +67,8 @@ export class UsuarioService {
       })
       .pipe(
         tap((resp: any) => {
+          const { nombre, email, img, google, role, uid } = resp.usuario;
+          this.usuario = new Usuario(nombre, email, "", img, google, role, uid);
           localStorage.setItem("token", resp.token);
         }),
         map((resp) => true),
