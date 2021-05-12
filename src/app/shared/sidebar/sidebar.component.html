@@ -17,11 +17,19 @@
             <span class="hide-menu">{{ usuario.nombre }}</span>
           </a>
           <ul aria-expanded="false" class="collapse">
-            <li><a href="javascript:void()">My Profile </a></li>
+            <li>
+              <a routerLinkActive="active" routerLink="/dashboard/perfil"
+                >My Profile
+              </a>
+            </li>
             <li><a href="javascript:void()">My Balance</a></li>
             <li><a href="javascript:void()">Inbox</a></li>
             <li>
-              <a routerLink="/dashboard/account-settings">Account Settings</a>
+              <a
+                routerLinkActive="active"
+                routerLink="/dashboard/account-settings"
+                >Account Settings</a
+              >
             </li>
             <li><a routerLink="/login">Logout</a></li>
           </ul>
