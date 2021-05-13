@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // modules
 import { SharedModule } from "../shared/shared.module";
@@ -34,6 +34,7 @@ import { PerfilComponent } from "./perfil/perfil.component";
     FormsModule,
     SharedModule,
     ComponentsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     DashboardComponent,
