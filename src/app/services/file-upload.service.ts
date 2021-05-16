@@ -16,6 +16,7 @@ export class FileUploadService {
   ): Promise<any> {
     try {
       const url = `${base_url}/upload/${tipo}/${id}`;
+
       const formData = new FormData();
       formData.append("imagen", archivo);
 
@@ -25,8 +26,14 @@ export class FileUploadService {
         body: formData,
       });
 
-      console.log(await resp.json());
-      return "Nombre de la imagen...";
+      const data = await resp.json();
+
+      if (data.ok) {
+        return data.nombreArchivo;
+      } else {
+        console.log(data.msg);
+        return false;
+      }
     } catch (error) {
       console.log(error);
       return false;

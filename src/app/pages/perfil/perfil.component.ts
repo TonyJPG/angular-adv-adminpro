@@ -6,6 +6,8 @@ import { FileUploadService } from "../../services/file-upload.service";
 
 import { Usuario } from "../../models/usuario.model";
 
+import Swal from "sweetalert2";
+
 @Component({
   selector: "app-perfil",
   templateUrl: "./perfil.component.html",
@@ -15,6 +17,7 @@ export class PerfilComponent implements OnInit {
   public perfilForm!: FormGroup;
   public usuario: Usuario;
   public imagenSubir!: File;
+  public imgTemp: any = null;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -45,17 +48,32 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  cambiarImagen(event: any): void {
-    console.log(event.target.files[0]);
-    this.imagenSubir = event.target.files[0];
+  cambiarImagen(file: any): void {
+    const imagen = file.target.files[0];
+    this.imagenSubir = imagen;
+
+    if (!imagen) {
+      this.imgTemp = null;
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(imagen);
+
+    reader.onloadend = () => {
+      this.imgTemp = reader.result;
+    };
   }
 
   subirImagen(): void {
     this.fileUploadService
       .actualizarFoto(this.imagenSubir, "usuarios", this.usuario.uid)
-      .then((resp) => {
-        console.log(resp);
-        console.log("hecho");
+      .then((imgUrl) => {
+        this.usuario.img = imgUrl;
+        Swal.fire({
+          text: "Imagen de usuario cambiada!",
+          icon: "success",
+        });
       });
   }
 }

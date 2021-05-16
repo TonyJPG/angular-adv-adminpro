@@ -15,3 +15,10 @@
 .abcRioButton {
   margin: 0 auto 30px;
 }
+
+/* imagen de usuario en /perfil */
+.img-avatar {
+  max-width: 50%;
+  height: auto;
+  margin: 10px 0 30px 25%;
+}
