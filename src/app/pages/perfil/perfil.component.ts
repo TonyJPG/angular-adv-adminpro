@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import Swal from "sweetalert2";
 
 import { UsuarioService } from "../../services/usuario.service";
 import { FileUploadService } from "../../services/file-upload.service";
 
 import { Usuario } from "../../models/usuario.model";
-
-import Swal from "sweetalert2";
 
 @Component({
   selector: "app-perfil",
@@ -41,9 +40,19 @@ export class PerfilComponent implements OnInit {
         const { nombre, email } = this.perfilForm.value;
         this.usuario.nombre = nombre;
         this.usuario.email = email;
+
+        Swal.fire({
+          text: "Los cambios fueron guardados!",
+          icon: "success",
+        });
       },
       error: (err) => {
         console.log(err);
+        Swal.fire({
+          title: `Error ${err.status}`,
+          text: err.error.msg,
+          icon: "error",
+        });
       },
     });
   }
@@ -73,6 +82,14 @@ export class PerfilComponent implements OnInit {
         Swal.fire({
           text: "Imagen de usuario cambiada!",
           icon: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo cambiar la imagen...",
+          icon: "error",
         });
       });
   }
