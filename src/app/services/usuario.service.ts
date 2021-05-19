@@ -125,7 +125,6 @@ export class UsuarioService {
 
   cargarUsuarios(desde: number = 0): Observable<any> {
     const url = `${base_url}/usuarios?desde=${desde}`;
-
     return this.http.get<CargarUsuario>(url, this.headers);
   }
 }

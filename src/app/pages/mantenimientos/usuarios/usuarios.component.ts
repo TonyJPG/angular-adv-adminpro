@@ -10,6 +10,7 @@ import { Usuario } from "../../../models/usuario.model";
 export class UsuariosComponent implements OnInit {
   public totalUsuarios = 0;
   public usuarios: Usuario[] = [];
+  public desde = 0;
 
   constructor(private usuarioService: UsuarioService) {}
 
@@ -18,7 +19,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   cargarUsuarios(): void {
-    this.usuarioService.cargarUsuarios(0).subscribe({
+    this.usuarioService.cargarUsuarios(this.desde).subscribe({
       next: ({ total, usuarios }) => {
         this.totalUsuarios = total;
         this.usuarios = usuarios;
@@ -28,5 +29,18 @@ export class UsuariosComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  cambiarPagina(value: number): void {
+    this.desde += value;
+
+    if (this.desde < 0) {
+      this.desde = 0;
+    } else if (this.desde >= this.totalUsuarios) {
+      this.desde -= value;
+    }
+
+    // recargo la lista luego de actualizar: desde
+    this.cargarUsuarios();
   }
 }
