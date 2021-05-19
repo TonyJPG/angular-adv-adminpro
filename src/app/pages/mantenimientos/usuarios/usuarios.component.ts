@@ -11,6 +11,7 @@ export class UsuariosComponent implements OnInit {
   public totalUsuarios = 0;
   public usuarios: Usuario[] = [];
   public desde = 0;
+  public cargando = true;
 
   constructor(private usuarioService: UsuarioService) {}
 
@@ -19,10 +20,12 @@ export class UsuariosComponent implements OnInit {
   }
 
   cargarUsuarios(): void {
+    this.cargando = true;
     this.usuarioService.cargarUsuarios(this.desde).subscribe({
       next: ({ total, usuarios }) => {
         this.totalUsuarios = total;
         this.usuarios = usuarios;
+        this.cargando = false;
       },
       error: (err) => {
         console.log(err);

@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="row animated fadeIn fast">
+<div class="row animated fadeIn fast" *ngIf="cargando">
   <div class="col-12">
     <div class="alert alert-info text-center">
       <h5 class="alert-heading">Cargando</h5>
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row animated fadeIn fast" *ngIf="!cargando">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -66,7 +66,7 @@
                     >Email</span
                   >
                 </td>
-                <td class="text-nowrap">
+                <td class="text-nowrap text-center">
                   <a
                     href="#"
                     data-toggle="tooltip"
