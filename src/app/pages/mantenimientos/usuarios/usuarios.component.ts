@@ -39,7 +39,7 @@ export class UsuariosComponent implements OnInit {
       this.desde -= value;
     }
 
-    // recargo la lista luego de actualizar: desde
+    // recargo la lista luego de actualizar "desde"
     this.cargarUsuarios();
   }
 }
