@@ -22,3 +22,12 @@
   height: auto;
   margin: 10px 0 30px 25%;
 }
+
+.w100 {
+  width: 100px;
+}
+
+.avatar {
+  width: 30px;
+  border-radius: 5px;
+}

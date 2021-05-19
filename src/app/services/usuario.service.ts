@@ -125,6 +125,22 @@ export class UsuarioService {
 
   cargarUsuarios(desde: number = 0): Observable<any> {
     const url = `${base_url}/usuarios?desde=${desde}`;
-    return this.http.get<CargarUsuario>(url, this.headers);
+    return this.http.get<CargarUsuario>(url, this.headers).pipe(
+      map((resp) => {
+        const usuarios = resp.usuarios.map((user) => {
+          return new Usuario(
+            user.nombre,
+            user.email,
+            "",
+            user.img,
+            user.google,
+            user.role,
+            user.uid
+          );
+        });
+        console.log(resp);
+        return { total: resp.total, usuarios };
+      })
+    );
   }
 }

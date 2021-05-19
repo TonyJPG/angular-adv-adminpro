@@ -23,7 +23,6 @@ export class UsuariosComponent implements OnInit {
       next: ({ total, usuarios }) => {
         this.totalUsuarios = total;
         this.usuarios = usuarios;
-        console.log(this.usuarios);
       },
       error: (err) => {
         console.log(err);
