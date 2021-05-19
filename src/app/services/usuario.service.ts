@@ -9,6 +9,8 @@ import { tap, map, catchError } from "rxjs/operators";
 
 import { RegisterForm } from "../interfaces/register-form.interface";
 import { LoginForm } from "../interfaces/login-form.interface";
+import { CargarUsuario } from "../interfaces/cargar-usuario.interface";
+
 import { Usuario } from "../models/usuario.model";
 
 const base_url = environment.base_url;
@@ -38,6 +40,10 @@ export class UsuarioService {
     return this.usuario.uid || "";
   }
 
+  get headers(): object {
+    return { headers: { "x-token": this.token } };
+  }
+
   googleInit(): Promise<any> {
     return new Promise<void>((resolve) => {
       console.log("Google Init Promise!");
@@ -65,21 +71,15 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean> {
-    return this.http
-      .get(`${base_url}/login/renew`, {
-        headers: {
-          "x-token": this.token,
-        },
-      })
-      .pipe(
-        map((resp: any) => {
-          const { nombre, email, img = "", google, role, uid } = resp.usuario;
-          this.usuario = new Usuario(nombre, email, "", img, google, role, uid);
-          localStorage.setItem("token", resp.token);
-          return true;
-        }),
-        catchError((error) => of(false))
-      );
+    return this.http.get(`${base_url}/login/renew`, this.headers).pipe(
+      map((resp: any) => {
+        const { nombre, email, img = "", google, role, uid } = resp.usuario;
+        this.usuario = new Usuario(nombre, email, "", img, google, role, uid);
+        localStorage.setItem("token", resp.token);
+        return true;
+      }),
+      catchError((error) => of(false))
+    );
   }
 
   crearUsuario(formData: RegisterForm): Observable<any> {
@@ -100,11 +100,11 @@ export class UsuarioService {
       role: this.usuario.role || "",
     };
 
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        "x-token": this.token,
-      },
-    });
+    return this.http.put(
+      `${base_url}/usuarios/${this.uid}`,
+      data,
+      this.headers
+    );
   }
 
   login(formData: LoginForm): Observable<any> {
@@ -121,5 +121,11 @@ export class UsuarioService {
         localStorage.setItem("token", resp.token);
       })
     );
+  }
+
+  cargarUsuarios(desde: number = 0): Observable<any> {
+    const url = `${base_url}/usuarios?desde=${desde}`;
+
+    return this.http.get<CargarUsuario>(url, this.headers);
   }
 }

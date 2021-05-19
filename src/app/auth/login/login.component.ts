@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
       [Validators.required, Validators.email],
     ],
     password: ["", Validators.required],
-    remember: [false],
+    remember: [localStorage.getItem("email") ? true : false],
   });
 
   constructor(
