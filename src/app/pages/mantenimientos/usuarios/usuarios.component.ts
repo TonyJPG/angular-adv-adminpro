@@ -11,6 +11,7 @@ import { BusquedasService } from "../../../services/busquedas.service";
 export class UsuariosComponent implements OnInit {
   public totalUsuarios = 0;
   public usuarios: Usuario[] = [];
+  public usuariosTemp: Usuario[] = [];
   public desde = 0;
   public cargando = true;
 
@@ -29,6 +30,7 @@ export class UsuariosComponent implements OnInit {
       next: ({ total, usuarios }) => {
         this.totalUsuarios = total;
         this.usuarios = usuarios;
+        this.usuariosTemp = usuarios;
         this.cargando = false;
       },
       error: (err) => {
@@ -50,10 +52,15 @@ export class UsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
-  buscar(termino: string): void {
+  buscar(termino: string): any {
+    if (termino.length === 0) {
+      return (this.usuarios = this.usuariosTemp);
+    }
+
     this.busquedasService
       .buscar("usuarios", termino)
       .subscribe((resultados: any) => {
+        console.log(resultados);
         this.usuarios = resultados;
       });
   }
