@@ -32,7 +32,7 @@
           <div class="col">
             <h6 class="card-subtitle">Usuarios registrados en la aplicación</h6>
           </div>
-          <div class="col">
+          <div class="col" *ngIf="txtTermino.value.length === 0">
             <h6 class="card-subtitle text-right">Página {{ desde / 5 + 1 }}</h6>
           </div>
         </div>
@@ -88,12 +88,14 @@
             </tbody>
           </table>
         </div>
-        <button class="btn btn-secondary mr-3" (click)="cambiarPagina(-5)">
-          Anteriores
-        </button>
-        <button class="btn btn-secondary" (click)="cambiarPagina(5)">
-          Siguientes
-        </button>
+        <div *ngIf="txtTermino.value.length === 0">
+          <button class="btn btn-secondary mr-3" (click)="cambiarPagina(-5)">
+            Anteriores
+          </button>
+          <button class="btn btn-secondary" (click)="cambiarPagina(5)">
+            Siguientes
+          </button>
+        </div>
       </div>
     </div>
   </div>

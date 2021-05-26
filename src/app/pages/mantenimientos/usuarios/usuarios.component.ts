@@ -60,7 +60,6 @@ export class UsuariosComponent implements OnInit {
     this.busquedasService
       .buscar("usuarios", termino)
       .subscribe((resultados: any) => {
-        console.log(resultados);
         this.usuarios = resultados;
       });
   }
