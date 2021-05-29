@@ -90,6 +90,7 @@ export class UsuarioService {
     );
   }
 
+  // actualiza al usuario que está logeado
   actualizarPerfil(data: {
     email: string;
     nombre: string;
@@ -103,6 +104,15 @@ export class UsuarioService {
     return this.http.put(
       `${base_url}/usuarios/${this.uid}`,
       data,
+      this.headers
+    );
+  }
+
+  // actualiza al usuario que queramos
+  guardarUsuario(usuario: Usuario): Observable<any> {
+    return this.http.put(
+      `${base_url}/usuarios/${usuario.uid}`,
+      usuario,
       this.headers
     );
   }
