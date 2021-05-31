@@ -49,8 +49,3 @@
 .oculto {
   display: none;
 }
-
-#exampleModal {
-  display: grid;
-  place-items: center;
-}

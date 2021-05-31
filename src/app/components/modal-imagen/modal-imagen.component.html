@@ -1,7 +1,9 @@
-<div class="fondo-modal-imagen animated fadeIn fast oculto">
+<div
+  class="fondo-modal-imagen animated fadeIn fast oculto"
+  [class.oculto]="ocultarModal"
+>
   <div
     class="modal fade show"
-    [class.oculto]="ocultarModal"
     id="exampleModal"
     tabindex="-1"
     role="dialog"
@@ -14,7 +16,7 @@
           <h4 class="modal-title" id="exampleModalLabel1">Cargar imagen</h4>
           <button
             type="button"
-            class="close"
+            class="close cursor-pointer"
             data-dismiss="modal"
             aria-label="Close"
             (click)="cerrarModal()"
