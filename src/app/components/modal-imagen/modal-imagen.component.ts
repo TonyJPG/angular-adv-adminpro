@@ -1,5 +1,12 @@
 import { Component, ElementRef, ViewChild } from "@angular/core";
+
+import Swal from "sweetalert2";
+
 import { ModalImagenService } from "../../services/modal-imagen.service";
+import { FileUploadService } from "../../services/file-upload.service";
+import { UsuarioService } from "../../services/usuario.service";
+
+import { Usuario } from "../../models/usuario.model";
 
 @Component({
   selector: "app-modal-imagen",
@@ -9,9 +16,16 @@ import { ModalImagenService } from "../../services/modal-imagen.service";
 export class ModalImagenComponent {
   public imagenSubir!: File;
   public imgTemp: any = null;
+  public usuario: Usuario;
 
   @ViewChild("inputFile") myInputVariable!: ElementRef;
-  constructor(public modalImagenService: ModalImagenService) {}
+  constructor(
+    public modalImagenService: ModalImagenService,
+    private fileUploadService: FileUploadService,
+    private usuarioService: UsuarioService
+  ) {
+    this.usuario = usuarioService.usuario;
+  }
 
   cerrarModal(): void {
     this.imgTemp = null;
@@ -34,5 +48,30 @@ export class ModalImagenComponent {
     reader.onloadend = () => {
       this.imgTemp = reader.result;
     };
+  }
+
+  subirImagen(): void {
+    const tipo = this.modalImagenService.tipo;
+    const id = this.modalImagenService.id;
+
+    this.fileUploadService
+      .actualizarFoto(this.imagenSubir, tipo, id)
+      .then((imgUrl) => {
+        Swal.fire({
+          text: "Imagen de usuario cambiada!",
+          icon: "success",
+        });
+        this.usuario.img = imgUrl;
+        this.modalImagenService.nuevaImagen.emit(imgUrl);
+        this.cerrarModal();
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo cambiar la imagen...",
+          icon: "error",
+        });
+      });
   }
 }
