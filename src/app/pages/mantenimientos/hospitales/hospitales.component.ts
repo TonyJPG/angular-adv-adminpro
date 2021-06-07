@@ -32,4 +32,8 @@ export class HospitalesComponent implements OnInit {
       error: (err) => console.log(err),
     });
   }
+
+  buscar(txtTermino: string): void {
+    console.log(txtTermino);
+  }
 }

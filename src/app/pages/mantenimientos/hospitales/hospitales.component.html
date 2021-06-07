@@ -7,6 +7,7 @@
           type="text"
           placeholder="Buscar hospital..."
           #txtTermino
+          (keyup)="buscar(txtTermino.value)"
         />
       </div>
     </div>
@@ -16,7 +17,7 @@
 <div class="row animated fadeIn fast" *ngIf="cargando">
   <div class="col-12">
     <div class="alert alert-info text-center">
-      <h4 class="alert-heading">Cargando</h4>
+      <h5 class="alert-heading">Cargando</h5>
       <i class="fa fa-spin fa-refresh fa-2x"></i>
     </div>
   </div>
@@ -41,14 +42,20 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Foto</th>
+                <th style="width: 80px">Foto</th>
                 <th>Nombre</th>
-                <th class="text-nowrap text-center">Acciones</th>
+                <th class="text-nowrap text-center w100">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let hospital of hospitales">
-                <td class="align-middle">{{ hospital.img || "no-img" }}</td>
+                <td class="text-center align-middle">
+                  <img
+                    class="avatar cursor-pointer"
+                    [src]="hospital.img | imagen: 'hospitales'"
+                    [alt]="hospital.nombre"
+                  />
+                </td>
                 <td>
                   <input
                     type="text"
