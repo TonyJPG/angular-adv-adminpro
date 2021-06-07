@@ -33,4 +33,19 @@ export class HospitalService {
       })
     );
   }
+
+  crearHospital(nombre: string): Observable<any> {
+    const url = `${base_url}/hospitales`;
+    return this.http.post(url, { nombre }, this.headers);
+  }
+
+  actualizarHospital(hid: string, nombre: string): Observable<any> {
+    const url = `${base_url}/hospitales/${hid}`;
+    return this.http.put(url, { nombre }, this.headers);
+  }
+
+  borrarHospital(hid: string): Observable<any> {
+    const url = `${base_url}/hospitales/${hid}`;
+    return this.http.delete(url, this.headers);
+  }
 }
