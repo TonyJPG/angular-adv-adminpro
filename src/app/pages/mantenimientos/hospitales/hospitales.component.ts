@@ -40,7 +40,8 @@ export class HospitalesComponent implements OnInit {
     this.hospitalService
       .actualizarHospital(hospital.hid || "", hospital.nombre)
       .subscribe({
-        next: () => Swal.fire("Actualizado!", hospital.nombre, "success"),
+        next: () =>
+          Swal.fire("Hospital actualizado!", hospital.nombre, "success"),
         error: (err) => console.log(err),
       });
   }
@@ -49,7 +50,7 @@ export class HospitalesComponent implements OnInit {
     this.hospitalService.borrarHospital(hospital.hid || "").subscribe({
       next: () => {
         this.cargarHospitales();
-        Swal.fire("Eliminado!", hospital.nombre, "success");
+        Swal.fire("Hospital eliminado!", hospital.nombre, "success");
       },
       error: (err) => console.log(err),
     });
