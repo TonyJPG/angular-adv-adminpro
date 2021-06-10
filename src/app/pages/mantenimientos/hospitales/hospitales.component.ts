@@ -36,6 +36,19 @@ export class HospitalesComponent implements OnInit {
     });
   }
 
+  cambiarPagina(value: number): void {
+    this.desde += value;
+
+    if (this.desde < 0) {
+      this.desde = 0;
+    } else if (this.desde >= this.totalHospitales) {
+      this.desde -= value;
+    }
+
+    // recargo la lista luego de actualizar "desde"
+    this.cargarHospitales();
+  }
+
   guardarCambios(hospital: Hospital): void {
     this.hospitalService
       .actualizarHospital(hospital.hid || "", hospital.nombre)
