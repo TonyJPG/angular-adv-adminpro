@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 
 import { HospitalService } from "../../../services/hospital.service";
 import { Hospital } from "../../../models/hospital.model";
-import { CargarHospital } from "../../../interfaces/cargar-hospital.interface";
 
 @Component({
   selector: "app-hospitales",
@@ -63,6 +62,12 @@ export class HospitalesComponent implements OnInit {
     this.hospitalService.borrarHospital(hospital.hid || "").subscribe({
       next: () => {
         this.cargarHospitales();
+        // TODO cambiar setTimeout por código asíncrono
+        setTimeout(() => {
+          if (this.totalHospitales % 5 === 0) {
+            this.cambiarPagina(-5);
+          }
+        }, 2000);
         Swal.fire("Hospital eliminado!", hospital.nombre, "success");
       },
       error: (err) => console.log(err),
@@ -83,8 +88,14 @@ export class HospitalesComponent implements OnInit {
 
     if (value && value.trim().length > 0) {
       this.hospitalService.crearHospital(value.trim()).subscribe({
-        next: (resp) => {
+        next: () => {
           this.cargarHospitales();
+          // TODO cambiar setTimeout por código asíncrono
+          setTimeout(() => {
+            if (this.totalHospitales % 5 === 1) {
+              this.cambiarPagina(5);
+            }
+          }, 2000);
           Swal.fire("Hospital creado!", value, "success");
         },
         error: (err) => console.log(err),
