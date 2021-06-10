@@ -54,6 +54,7 @@
                     class="avatar cursor-pointer"
                     [src]="hospital.img | imagen: 'hospitales'"
                     [alt]="hospital.nombre"
+                    (click)="abrirModal(hospital)"
                   />
                 </td>
                 <td>

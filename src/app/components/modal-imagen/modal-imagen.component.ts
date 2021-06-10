@@ -51,14 +51,22 @@ export class ModalImagenComponent {
   }
 
   subirImagen(): void {
-    const tipo = this.modalImagenService.tipo;
+    const tipo = this.modalImagenService.tipo || "";
+    let tipoSingular = "";
     const id = this.modalImagenService.id;
+
+    // para saber si decir IMAGEN DE "USUARIO" O "HOSPITAL" O "MEDICO" cambiada
+    if (tipo.endsWith("es")) {
+      tipoSingular = "hospital";
+    } else {
+      tipoSingular = tipo.slice(0, tipo.length - 1);
+    }
 
     this.fileUploadService
       .actualizarFoto(this.imagenSubir, tipo, id)
       .then((imgUrl) => {
         Swal.fire({
-          text: "Imagen de usuario cambiada!",
+          text: `Imagen de ${tipoSingular} cambiada!`,
           icon: "success",
         });
         this.usuario.img = imgUrl;
@@ -75,3 +83,10 @@ export class ModalImagenComponent {
       });
   }
 }
+
+// TODO revisar, al cambiar una imagen actualiza el avatar del menú y sidebar
+// TODO pero solo deberíoa hacerlo cuando se cambia la imagen del usuario actualmente logeado
+// TODO lo hace incluso al cambiar imagen de hospital...
+
+// TODO revisar al reabrir un modal la url de imagen queda guardada,
+// TODO con darle al boton se cambia la imagen, con la selección previa

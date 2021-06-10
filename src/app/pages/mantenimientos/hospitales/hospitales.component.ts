@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { delay } from "rxjs/operators";
 
 import Swal from "sweetalert2";
 
 import { HospitalService } from "../../../services/hospital.service";
+import { ModalImagenService } from "../../../services/modal-imagen.service";
 import { Hospital } from "../../../models/hospital.model";
 
 @Component({
@@ -15,11 +18,23 @@ export class HospitalesComponent implements OnInit {
   public hospitales: Hospital[] = [];
   public desde = 0;
   public cargando = true;
+  public imgSubs!: Subscription;
 
-  constructor(private hospitalService: HospitalService) {}
+  constructor(
+    private hospitalService: HospitalService,
+    private modalImagenService: ModalImagenService
+  ) {}
 
   ngOnInit(): void {
     this.cargarHospitales();
+
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(delay(500))
+      .subscribe((img: string) => {
+        console.log("emitió");
+        console.log(img);
+        this.cargarHospitales();
+      });
   }
 
   cargarHospitales(): void {
@@ -101,6 +116,14 @@ export class HospitalesComponent implements OnInit {
         error: (err) => console.log(err),
       });
     }
+  }
+
+  abrirModal(hospital: Hospital): void {
+    this.modalImagenService.abrirModal(
+      "hospitales",
+      hospital.hid,
+      hospital.img
+    );
   }
 
   buscar(txtTermino: string): void {
