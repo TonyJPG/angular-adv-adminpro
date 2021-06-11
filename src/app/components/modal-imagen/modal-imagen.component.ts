@@ -17,6 +17,7 @@ export class ModalImagenComponent {
   public imagenSubir!: File;
   public imgTemp: any = null;
   public usuario: Usuario;
+  private fileSelectorClicked = false;
 
   @ViewChild("inputFile") myInputVariable!: ElementRef;
   constructor(
@@ -69,7 +70,10 @@ export class ModalImagenComponent {
           text: `Imagen de ${tipoSingular} cambiada!`,
           icon: "success",
         });
-        this.usuario.img = imgUrl;
+        // si cambió la img de nuestro usuario
+        if (tipo === "usuarios" && id === this.usuario.uid) {
+          this.usuario.img = imgUrl;
+        }
         this.modalImagenService.nuevaImagen.emit(imgUrl);
         this.cerrarModal();
       })

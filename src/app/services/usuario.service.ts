@@ -148,7 +148,6 @@ export class UsuarioService {
             user.uid
           );
         });
-        console.log(resp);
         return { total: resp.total, usuarios };
       })
     );
