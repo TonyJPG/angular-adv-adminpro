@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 
 import { HospitalService } from "../../../services/hospital.service";
 import { ModalImagenService } from "../../../services/modal-imagen.service";
+import { BusquedasService } from "../../../services/busquedas.service";
+
 import { Hospital } from "../../../models/hospital.model";
 
 @Component({
@@ -16,13 +18,15 @@ import { Hospital } from "../../../models/hospital.model";
 export class HospitalesComponent implements OnInit {
   public totalHospitales = 0;
   public hospitales: Hospital[] = [];
+  public hospitalesTemp: Hospital[] = [];
   public desde = 0;
   public cargando = true;
   public imgSubs!: Subscription;
 
   constructor(
     private hospitalService: HospitalService,
-    private modalImagenService: ModalImagenService
+    private modalImagenService: ModalImagenService,
+    private busquedasService: BusquedasService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +46,7 @@ export class HospitalesComponent implements OnInit {
     this.hospitalService.cargarHospitales(this.desde).subscribe({
       next: ({ total, hospitales }) => {
         this.hospitales = hospitales;
+        this.hospitalesTemp = hospitales;
         this.totalHospitales = total;
         console.log({ total, hospitales });
         this.cargando = false;
@@ -126,7 +131,14 @@ export class HospitalesComponent implements OnInit {
     );
   }
 
-  buscar(txtTermino: string): void {
-    console.log(txtTermino);
+  buscar(txtTermino: string): any {
+    if (txtTermino.length === 0) {
+      return (this.hospitales = this.hospitalesTemp);
+    }
+
+    this.busquedasService.buscar("hospitales", txtTermino).subscribe({
+      next: (resp: any) => (this.hospitales = resp),
+      error: (err: any) => console.log(err),
+    });
   }
 }

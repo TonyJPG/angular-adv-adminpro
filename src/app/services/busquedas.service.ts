@@ -47,7 +47,7 @@ export class BusquedasService {
             return this.transformarUsuarios(resp.resultado);
 
           default:
-            return [];
+            return resp.resultado;
         }
       })
     );

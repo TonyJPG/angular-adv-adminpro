@@ -88,9 +88,6 @@ export class ModalImagenComponent {
   }
 }
 
-// TODO revisar, al cambiar una imagen actualiza el avatar del menú y sidebar
-// TODO pero solo deberíoa hacerlo cuando se cambia la imagen del usuario actualmente logeado
-// TODO lo hace incluso al cambiar imagen de hospital...
-
 // TODO revisar al reabrir un modal la url de imagen queda guardada,
-// TODO con darle al boton se cambia la imagen, con la selección previa
+// con darle al boton se cambia la imagen, con la selección previa
+// y con pagina nueva, al intentar cambiar la imagen sin elegirla, sale un swal exitoso
