@@ -9,7 +9,7 @@ interface MedicoUser {
 export class Medico {
   constructor(
     public nombre: string,
-    public hid?: string,
+    public mid?: string,
     public img?: string,
     public usuario?: MedicoUser,
     public hospital?: Hospital

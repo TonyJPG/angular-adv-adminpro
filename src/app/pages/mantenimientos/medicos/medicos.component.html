@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="row animated fadeIn fast">
+<div class="row animated fadeIn fast" *ngIf="cargando">
   <div class="col-12">
     <div class="alert alert-info text-center">
       <h4 class="alert-heading">Cargando</h4>
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row animated fadeIn fast" *ngIf="!cargando">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -47,6 +47,7 @@
                     class="avatar cursor-pointer"
                     [src]="medico.img | imagen: 'medicos'"
                     [alt]="medico.nombre"
+                    (click)="abrirModal(medico)"
                   />
                 </td>
                 <td>{{ medico.nombre }}</td>

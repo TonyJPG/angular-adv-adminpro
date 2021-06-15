@@ -22,22 +22,22 @@ export class MedicoService {
   get headers(): object {
     return { headers: { "x-token": this.token } };
   }
-  // TODO fix el tipado aca (medico vs cargarmedico vs etc)
+
   cargarMedicos(): Observable<any> {
     const url = `${base_url}/medicos`;
     return this.http
-      .get<Medico[]>(url, this.headers)
-      .pipe(map((resp: Medico[]) => console.log(resp)));
+      .get<CargarMedico>(url, this.headers)
+      .pipe(map((resp) => resp.medicos));
   }
 
-  crearMedico(nombre: string): Observable<any> {
+  crearMedico(medico: Medico): Observable<any> {
     const url = `${base_url}/medicos`;
-    return this.http.post(url, { nombre }, this.headers);
+    return this.http.post(url, medico, this.headers);
   }
 
-  actualizarMedico(mid: string, nombre: string): Observable<any> {
-    const url = `${base_url}/medicos/${mid}`;
-    return this.http.put(url, { nombre }, this.headers);
+  actualizarMedico(medico: Medico): Observable<any> {
+    const url = `${base_url}/medicos/${medico.mid}`;
+    return this.http.put(url, medico, this.headers);
   }
 
   borrarMedico(mid: string): Observable<any> {

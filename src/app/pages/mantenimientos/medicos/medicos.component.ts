@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 
-import { MedicoService } from "../../../services/medico.service";
 import { Medico } from "../../../models/medico.model";
+
+import { MedicoService } from "../../../services/medico.service";
+import { ModalImagenService } from "../../../services/modal-imagen.service";
 
 @Component({
   selector: "app-medicos",
@@ -15,7 +17,10 @@ export class MedicosComponent implements OnInit {
   public cargando = true;
   public imgSubs!: Subscription;
 
-  constructor(private medicoService: MedicoService) {}
+  constructor(
+    private medicoService: MedicoService,
+    private modalImagenService: ModalImagenService
+  ) {}
 
   ngOnInit(): void {
     this.cargarMedicos();
@@ -24,13 +29,16 @@ export class MedicosComponent implements OnInit {
   cargarMedicos(): any {
     this.cargando = true;
     this.medicoService.cargarMedicos().subscribe({
-      next: ({ medicos }) => {
+      next: (medicos) => {
         this.medicos = medicos;
         this.medicosTemp = medicos;
-        console.log(medicos);
         this.cargando = false;
       },
       error: (err) => console.log(err),
     });
+  }
+
+  abrirModal(medico: Medico): void {
+    this.modalImagenService.abrirModal("medicos", medico.mid, medico.img);
   }
 }
