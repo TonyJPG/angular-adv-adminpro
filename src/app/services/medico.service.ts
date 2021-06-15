@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { CargarMedico } from "../interfaces/cargar-medico.interface";
+import { Medico } from "../models/medico.model";
 
 const base_url = environment.base_url;
 
@@ -21,15 +22,26 @@ export class MedicoService {
   get headers(): object {
     return { headers: { "x-token": this.token } };
   }
-
+  // TODO fix el tipado aca (medico vs cargarmedico vs etc)
   cargarMedicos(): Observable<any> {
     const url = `${base_url}/medicos`;
-    return this.http.get<CargarMedico>(url, this.headers).pipe(
-      map((resp) => {
-        return {
-          medicos: resp.medicos,
-        };
-      })
-    );
+    return this.http
+      .get<Medico[]>(url, this.headers)
+      .pipe(map((resp: Medico[]) => console.log(resp)));
+  }
+
+  crearMedico(nombre: string): Observable<any> {
+    const url = `${base_url}/medicos`;
+    return this.http.post(url, { nombre }, this.headers);
+  }
+
+  actualizarMedico(mid: string, nombre: string): Observable<any> {
+    const url = `${base_url}/medicos/${mid}`;
+    return this.http.put(url, { nombre }, this.headers);
+  }
+
+  borrarMedico(mid: string): Observable<any> {
+    const url = `${base_url}/medicos/${mid}`;
+    return this.http.delete(url, this.headers);
   }
 }
