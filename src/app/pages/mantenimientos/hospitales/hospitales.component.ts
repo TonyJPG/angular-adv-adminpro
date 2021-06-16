@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { delay } from "rxjs/operators";
 
@@ -15,7 +15,7 @@ import { Hospital } from "../../../models/hospital.model";
   templateUrl: "./hospitales.component.html",
   styles: [],
 })
-export class HospitalesComponent implements OnInit {
+export class HospitalesComponent implements OnInit, OnDestroy {
   public totalHospitales = 0;
   public hospitales: Hospital[] = [];
   public hospitalesTemp: Hospital[] = [];
@@ -39,6 +39,10 @@ export class HospitalesComponent implements OnInit {
         console.log(img);
         this.cargarHospitales();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
   }
 
   cargarHospitales(): void {

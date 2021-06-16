@@ -6,6 +6,8 @@
           class="form-control"
           type="text"
           placeholder="Buscar médico..."
+          #txtTermino
+          (keyup)="buscar(txtTermino.value)"
         />
       </div>
     </div>
@@ -53,6 +55,7 @@
                 <td>{{ medico.nombre }}</td>
                 <td class="text-nowrap text-center align-middle">
                   <a
+                    [routerLink]="['../medico', medico.mid]"
                     class="cursor-pointer"
                     data-toggle="tooltip"
                     data-original-title="Editar"
@@ -70,6 +73,13 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="row">
+          <div class="col text-right">
+            <a class="btn btn-primary text-right" routerLink="../medico/nuevo">
+              <i class="fa fa-hospital-o"></i> Crear Médico
+            </a>
+          </div>
         </div>
       </div>
     </div>
