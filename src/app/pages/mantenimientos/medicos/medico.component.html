@@ -1,1 +1,100 @@
-<p>medico works!</p>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Médico</h4>
+        <h6 class="card-subtitle">Información de médicos</h6>
+        <form
+          class="form-horizontal p-t-20"
+          [formGroup]="medicoForm"
+          (submit)="guardarMedico()"
+        >
+          <div class="form-group row">
+            <label for="exampleInputuname3" class="col-sm-3 control-label"
+              >Foto</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <img
+                  class="w140"
+                  src="http://localhost:3000/api/upload/medicos/no-img.jpg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputuname3" class="col-sm-3 control-label"
+              >Nombre</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-user"></i></div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputuname3"
+                  placeholder="Nombre del médico"
+                  formControlName="nombre"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail3" class="col-sm-3 control-label"
+              >Hospital</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <select
+                  class="form-control"
+                  name=""
+                  id=""
+                  formControlName="hospital"
+                >
+                  <option value="">Seleccione hospital</option>
+                  <option
+                    *ngFor="let hospital of hospitales"
+                    [value]="hospital.hid"
+                  >
+                    {{ hospital.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row m-b-0">
+            <div class="col">
+              <button
+                type="submit"
+                class="btn btn-success waves-effect waves-light btn-block"
+                [disabled]="medicoForm.invalid"
+              >
+                <i class="fa fa-save"></i> Guardar cambios
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Hospital</h4>
+        <h6 class="card-subtitle">Imagen de hospital asignado</h6>
+        <form class="form-horizontal p-t-20">
+          <div class="form-group row">
+            <div class="col">
+              <img
+                class="img-fluid"
+                src="http://localhost:3000/api/upload/medicos/no-img.jpg"
+                alt=""
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
