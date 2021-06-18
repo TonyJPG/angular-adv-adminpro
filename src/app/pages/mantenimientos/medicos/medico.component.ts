@@ -12,6 +12,7 @@ import { Hospital } from "../../../models/hospital.model";
 export class MedicoComponent implements OnInit {
   public medicoForm!: FormGroup;
   public hospitales: Hospital[] = [];
+  public hospitalSeleccionado: Hospital | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +26,15 @@ export class MedicoComponent implements OnInit {
     });
 
     this.cargarHospitales();
+
+    this.medicoForm.get("hospital")?.valueChanges.subscribe({
+      next: (hid) => {
+        this.hospitalSeleccionado = this.hospitales.find(
+          (elem) => elem.hid === hid
+        );
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   cargarHospitales(): any {
