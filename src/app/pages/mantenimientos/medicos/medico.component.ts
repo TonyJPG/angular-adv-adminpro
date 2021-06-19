@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 import { HospitalService } from "../../../services/hospital.service";
+import { MedicoService } from "../../../services/medico.service";
+
 import { Hospital } from "../../../models/hospital.model";
 
 @Component({
@@ -16,7 +18,8 @@ export class MedicoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private hospitalService: HospitalService
+    private hospitalService: HospitalService,
+    private medicoService: MedicoService
   ) {}
 
   ngOnInit(): void {
@@ -46,5 +49,9 @@ export class MedicoComponent implements OnInit {
 
   guardarMedico(): void {
     console.log(this.medicoForm.value);
+    this.medicoService.crearMedico(this.medicoForm.value).subscribe({
+      next: (resp) => console.log(resp),
+      error: (err) => console.log(err),
+    });
   }
 }
