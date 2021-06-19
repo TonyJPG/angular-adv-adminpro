@@ -9,7 +9,7 @@
           [formGroup]="medicoForm"
           (submit)="guardarMedico()"
         >
-          <div class="form-group row">
+          <div class="form-group row" *ngIf="medicoSeleccionado">
             <label for="exampleInputuname3" class="col-sm-3 control-label"
               >Foto</label
             >
@@ -17,7 +17,7 @@
               <div class="input-group">
                 <img
                   class="w140"
-                  src="http://localhost:3000/api/upload/medicos/no-img.jpg"
+                  [src]="medicoSeleccionado.img | imagen: 'medicos'"
                   alt=""
                 />
               </div>
@@ -69,7 +69,6 @@
                 type="submit"
                 class="btn btn-success waves-effect waves-light btn-block"
                 [disabled]="medicoForm.invalid"
-                (click)="guardarMedico()"
               >
                 <i class="fa fa-save"></i> Guardar cambios
               </button>
