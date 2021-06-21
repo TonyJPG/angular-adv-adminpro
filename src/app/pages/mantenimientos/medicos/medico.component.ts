@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { delay } from "rxjs/operators";
 
 import Swal from "sweetalert2";
 
@@ -38,6 +39,7 @@ export class MedicoComponent implements OnInit {
 
     this.cargarHospitales();
 
+    // si hay cambios en el select Hospital, se lo asigna en base de datos
     this.medicoForm.get("hospital")?.valueChanges.subscribe({
       next: (hid) => {
         this.hospitalSeleccionado = this.hospitales.find(
@@ -47,11 +49,10 @@ export class MedicoComponent implements OnInit {
       error: (err) => console.log(err),
     });
 
+    // recibo el id del url y si no es "nuevo" carga el medico usando dicho id
     this.activatedRoute.params.subscribe({
       next: ({ id }) => {
-        if (id === "nuevo") {
-          console.log("medico nuevo, no hago nada");
-        } else {
+        if (id !== "nuevo") {
           this.cargarMedico(id);
         }
       },
@@ -60,12 +61,25 @@ export class MedicoComponent implements OnInit {
   }
 
   cargarMedico(mid: string): void {
-    this.medicoService.obtenerMedicoPorId(mid).subscribe({
-      next: (medico) => {
-        this.medicoSeleccionado = medico;
-      },
-      error: (err) => console.log(err),
-    });
+    this.medicoService
+      .obtenerMedicoPorId(mid)
+      .pipe(delay(100))
+      .subscribe({
+        next: (medico) => {
+          // si no recibimos un medico válido, redirigimos
+          if (!medico) {
+            this.router.navigateByUrl("/dashboard/medicos");
+          } else {
+            const {
+              nombre,
+              hospital: { _id },
+            } = medico;
+            this.medicoForm.setValue({ nombre, hospital: _id });
+            this.medicoSeleccionado = medico;
+          }
+        },
+        error: (err) => console.log(err),
+      });
   }
 
   cargarHospitales(): any {
@@ -77,12 +91,32 @@ export class MedicoComponent implements OnInit {
 
   guardarMedico(): void {
     const { nombre } = this.medicoForm.value;
-    this.medicoService.crearMedico(this.medicoForm.value).subscribe({
-      next: (resp) => {
-        Swal.fire("Creado!", `${nombre} creado correctamente`, "success");
-        this.router.navigateByUrl(`/dashboard/medico/${resp.medico.mid}`);
-      },
-      error: (err) => console.log(err),
-    });
+
+    if (this.medicoSeleccionado) {
+      // si hay medico seleccionado actualizamos
+      const data = {
+        ...this.medicoForm.value,
+        mid: this.medicoSeleccionado.mid,
+      };
+      this.medicoService.actualizarMedico(data).subscribe({
+        next: (resp) => {
+          Swal.fire(
+            "Actualizado!",
+            `${nombre} actualizado correctamente`,
+            "success"
+          );
+        },
+        error: (err) => err,
+      });
+    } else {
+      // si no hay medico seleccionado, creamos uno nuevo
+      this.medicoService.crearMedico(this.medicoForm.value).subscribe({
+        next: (resp) => {
+          Swal.fire("Creado!", `${nombre} creado correctamente`, "success");
+          this.router.navigateByUrl(`/dashboard/medico/${resp.medico.mid}`);
+        },
+        error: (err) => console.log(err),
+      });
+    }
   }
 }

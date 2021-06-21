@@ -52,7 +52,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
         this.hospitales = hospitales;
         this.hospitalesTemp = hospitales;
         this.totalHospitales = total;
-        console.log({ total, hospitales });
         this.cargando = false;
       },
       error: (err) => console.log(err),
