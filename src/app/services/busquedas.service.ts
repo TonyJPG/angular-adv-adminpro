@@ -4,6 +4,8 @@ import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 
 import { Usuario } from "../models/usuario.model";
+import { Medico } from "../models/medico.model";
+import { Hospital } from "../models/hospital.model";
 
 const base_url = environment.base_url;
 
@@ -51,5 +53,15 @@ export class BusquedasService {
         }
       })
     );
+  }
+
+  busquedaGlobal(termino: string = ""): any {
+    const url = `${base_url}/todo/${termino}`;
+    return this.http.get<{
+      ok: boolean;
+      usuarios: Usuario[];
+      medicos: Medico[];
+      hospitales: Hospital[];
+    }>(url, this.headers);
   }
 }
