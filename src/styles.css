@@ -53,3 +53,7 @@
 .oculto {
   display: none;
 }
+
+.search-box .app-search .srh-btn {
+  top: 27px;
+}
