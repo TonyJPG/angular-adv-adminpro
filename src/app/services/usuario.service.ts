@@ -44,6 +44,11 @@ export class UsuarioService {
     return { headers: { "x-token": this.token } };
   }
 
+  guardarLocalStorage(token: string, menu: any): void {
+    localStorage.setItem("token", token);
+    localStorage.setItem("menu", JSON.stringify(menu));
+  }
+
   googleInit(): Promise<any> {
     return new Promise<void>((resolve) => {
       console.log("Google Init Promise!");
@@ -62,6 +67,7 @@ export class UsuarioService {
 
   logout(): void {
     localStorage.removeItem("token");
+    localStorage.removeItem("menu");
 
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => {
@@ -75,7 +81,7 @@ export class UsuarioService {
       map((resp: any) => {
         const { nombre, email, img = "", google, role, uid } = resp.usuario;
         this.usuario = new Usuario(nombre, email, "", img, google, role, uid);
-        localStorage.setItem("token", resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
         return true;
       }),
       catchError((error) => of(false))
@@ -85,7 +91,7 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm): Observable<any> {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem("token", resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }
@@ -120,7 +126,7 @@ export class UsuarioService {
   login(formData: LoginForm): Observable<any> {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem("token", resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }
@@ -128,7 +134,7 @@ export class UsuarioService {
   loginGoogle(token: string): Observable<any> {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem("token", resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }

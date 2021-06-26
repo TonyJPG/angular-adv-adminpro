@@ -17,7 +17,7 @@ export class SidebarComponent {
     private sidebarService: SidebarService,
     private usuarioService: UsuarioService
   ) {
-    this.menuItems = sidebarService.menu;
+    this.menuItems = sidebarService.cargarMenu();
     this.usuario = usuarioService.usuario;
   }
 }
