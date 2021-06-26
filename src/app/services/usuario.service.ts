@@ -40,6 +40,10 @@ export class UsuarioService {
     return this.usuario.uid || "";
   }
 
+  get role(): "ADMIN_ROLE" | "USER_ROLE" | undefined {
+    return this.usuario.role;
+  }
+
   get headers(): object {
     return { headers: { "x-token": this.token } };
   }

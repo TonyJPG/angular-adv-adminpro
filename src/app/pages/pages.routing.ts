@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 
 // guards
 import { AuthGuard } from "../guards/auth.guard";
+import { AdminGuard } from "../guards/admin.guard";
 
 // components
 import { AccountSettingsComponent } from "./account-settings/account-settings.component";
@@ -80,8 +81,11 @@ const routes: Routes = [
         component: MedicosComponent,
         data: { titulo: "Mantenimiento de Médicos" },
       },
+
+      // rutas de admin
       {
         path: "usuarios",
+        canActivate: [AdminGuard],
         component: UsuariosComponent,
         data: { titulo: "Mantenimiento de Usuarios" },
       },
